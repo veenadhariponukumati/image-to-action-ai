@@ -47,7 +47,7 @@ shared/
 drizzle/              Schema + migrations
 ```
 
-`client/src/components/{AIChatBox,DashboardLayout,Map}.tsx` and `client/src/pages/ComponentShowcase.tsx`
+`client/src/components/{AIChatBox,DashboardLayout}.tsx` and `client/src/pages/ComponentShowcase.tsx`
 are pre-built but currently unused — available scaffolding for future features, not part of the live app.
 
 ## Setup
