@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: image-to-action-ai
+    runtime: node
+    plan: free
+    buildCommand: pnpm install && pnpm run build && npx drizzle-kit migrate
+    startCommand: pnpm run start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Neon Postgres connection string — entered manually in the Render
+      # dashboard when the blueprint is created, never stored in the repo.
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      # Your OpenAI key — entered manually in the Render dashboard.
+      - key: OPENAI_API_KEY
+        sync: false
