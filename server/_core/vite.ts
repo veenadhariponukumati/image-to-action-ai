@@ -33,7 +33,9 @@ export async function setupVite(app: Express, server: Server) {
 }
 
 export function serveStatic(app: Express) {
-  const distPath = path.resolve(__dirname, "..", "public");
+  // serveStatic only ever runs from the esbuild-bundled dist/index.js, where
+  // __dirname is dist/ — matching vite's build output at dist/public.
+  const distPath = path.resolve(__dirname, "public");
   if (!fs.existsSync(distPath)) {
     throw new Error(`Could not find build directory: ${distPath}, run "pnpm run build" first`);
   }
