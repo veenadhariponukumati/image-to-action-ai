@@ -40,6 +40,8 @@ server/
     index.ts          Boots app.ts + Vite (dev) or static serving (prod) + listens
     auth.ts            POST /api/auth/{signup,login,forgot-password,reset-password}
     session.ts          JWT session cookie sign/verify, shared by tRPC context + plain REST routes
+    trpc.ts, context.ts  tRPC setup + per-request context (populates ctx.user from the session cookie)
+    password.ts          scrypt password hash/verify
     llm.ts              invokeLLM — thin wrapper around the OpenAI SDK
     email.ts            Pluggable password-reset email sender (logs to console until a provider key is set)
 shared/
@@ -78,3 +80,11 @@ then `npx drizzle-kit migrate`.
 ## CI
 
 `.github/workflows/ci.yml` spins up a Postgres service container, runs migrations, then typecheck + the full test suite, on every push and PR against `main`.
+
+## Deployment
+
+`render.yaml` is a ready-to-use [Render](https://render.com) Blueprint: free web service, build runs migrations before starting.
+It expects an external Postgres database — [Neon](https://neon.com)'s free tier works well here, since Render's own free
+Postgres expires after ~30 days and deletes its data. Deploy via Render's **New → Blueprint**, pointing at this repo; you'll
+be prompted to paste in `DATABASE_URL` (your Neon connection string) and `OPENAI_API_KEY` — `JWT_SECRET` is auto-generated,
+and the app's base URL is picked up automatically from Render's `RENDER_EXTERNAL_URL`.
